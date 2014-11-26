@@ -18,6 +18,9 @@ def main():
 	print "\n\n getting the response.."
 	os.system("sudo rm -rf output")
 	os.system("sudo mkdir output")
-	os.system("sudo hadoop fs -get /user/cloudera/QueryIndex/output")
+	os.system("sudo hadoop fs -get /user/cloudera/QueryIndex/output1")
+	os.system("sudo hadoop fs -get /user/cloudera/QueryIndex/output2")
+	os.system("sudo hadoop fs -get /user/cloudera/QueryIndex/output3")
+	os.system("sudo hadoop fs -get /user/cloudera/QueryIndex/output4")
 if __name__ == "__main__":
 	main()

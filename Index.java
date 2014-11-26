@@ -1,4 +1,5 @@
-
+package org.myorg;
+import org.myorg.*;
 
 import java.io.*;
 import java.util.*;
@@ -27,12 +28,10 @@ public class Index{
 	
 	public static int bucketid;
 
-    	//public void configure(JobConf job) {
-        	//super.configure(job);
-        	//bucketid = job.get("bucketid"); 
-        	//System.out.println(bucketid);
-   	 //}	
-
+	/*
+	 * This is a mapper class where each line will to thrown into appropriate buckets
+	 * Each line is compared againts iterator value and will be sent to reducer
+	 */
 	public static class Map extends MapReduceBase implements Mapper<LongWritable, Text, Text, Text> {
 		private Text sentence = new Text();
 		private Text sentiment  = new Text();
@@ -48,24 +47,35 @@ public class Index{
 	}
 
 	
-	//Reducer just collects
+	/*
+	 * The job of reducer is just collecting
+	 */
 	public static class Reduce extends MapReduceBase implements Reducer<Text, Text, Text, Text> {
 		public void reduce(Text key, Iterator<Text> values, OutputCollector<Text, Text> output, Reporter reporter) throws IOException {
 			if(values.hasNext()) output.collect(key, values.next());
 			else throw new IOException("No links found for" + key.toString());
 		}
 	}
-
+	/*
+	 * This function gets the sentiment value for a given line
+	 * input : String line
+	 * output : String sentiment value
+	 */
 	public static String get_senti(String str){
 		String[] columnDetail = new String[11];
 		columnDetail = str.split("\t");
 		return columnDetail[3];
 	}
+	
+	/*
+	 * This functions takes care of running the jobs
+	 * It also controls the input and output paths
+	 */
 	public void runjob(String inputPath,String OutputPath, int i){
 		JobConf conf = new JobConf(Index.class);
 		//conf.set("bucketid",Integer.toString(i));
 		//FileSystem fs = FileSystem.get(conf);
-	     bucketid = i;
+	     	bucketid = i;	
 		// paths for input, output and intermediate paths
 		Path RawDataInPath = new Path(inputPath);// Path where the orignal raw data is stored
 		Path IndexOutPath = new Path(OutputPath+ Integer.toString(i));// Output the result to ~/QueryIndex/output
