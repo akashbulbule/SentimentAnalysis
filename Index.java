@@ -39,7 +39,7 @@ public class Index{
 		public void map(LongWritable key, Text value, OutputCollector<Text, Text> output,Reporter reporter)throws IOException{
 			str = get_senti(value.toString());
 			sentence.set(value.toString());
-			sentiment.set(str);
+			sentiment.set("");
 			if (str.equals(Integer.toString(bucketid))){
 			     output.collect(sentence, sentiment);
 			}     
